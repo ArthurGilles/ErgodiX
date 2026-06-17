@@ -7,7 +7,7 @@ class Schedule(eqx.Module):
     Base class for SLIPS time schedules, defining the alpha(t) and g(t) functions.
     Subclass this to implement specific schedules by overriding the g(t) function.
     Schedule objects are passed to the SLIPSParams object, 
-    which is then passed to the geom_slips function.
+    which is then passed to the slips function.
     """
     def g(self, t: Float[Array, ""]) -> Float[Array, ""]:
         raise NotImplementedError

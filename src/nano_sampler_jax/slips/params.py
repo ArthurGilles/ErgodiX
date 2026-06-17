@@ -5,7 +5,7 @@ from .schedules import Schedule, GeomSchedule
 class SLIPSParams(eqx.Module):
     """
     Parameters for the SLIPS algorithm.
-    Object to be passed to the geom_slips function, which contains all
+    Object to be passed to the slips function, which contains all
     the parameters for the algorithm.
 
     Parameters

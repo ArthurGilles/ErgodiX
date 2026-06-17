@@ -18,8 +18,8 @@ def _single_slips(key: jax.Array,
     """
     Single SLIPS run for a single sample with a non-asymptotic geometric
     schedule.
-    This function is vectorized over samples in the geom_slips function.
-    It is meant to be used inside the geom_slips function, and 
+    This function is vectorized over samples in the slips function.
+    It is meant to be used inside the slips function, and 
     is not meant to be used directly.   
 
     Parameters
@@ -200,7 +200,7 @@ def slips(key: jax.Array,
     >>> batch_size = 2
     >>> dim = 1
     >>> params = SLIPSParams(10.0)
-    >>> samples = geom_slips(key, log_target, time_grid, batch_size, dim, params)
+    >>> samples = slips(key, log_target, time_grid, batch_size, dim, params)
     >>> print(samples)
     """
 
