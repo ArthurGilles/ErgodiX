@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
-from nano_sampler_jax.slips import slips, SLIPSParams, GeomSchedule
-from nano_sampler_jax.distributions import IsotropicGaussian
+from ergodix.slips import slips, SLIPSParams, GeomSchedule
+from ergodix.distributions import IsotropicGaussian
 
 def test_slips_params_initialization():
     params = SLIPSParams(sigma=5.0)

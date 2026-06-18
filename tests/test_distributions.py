@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
 import pytest
-from nano_sampler_jax.distributions import (
+from ergodix.distributions import (
     Banana, Funnel, IsotropicGaussian, IsotropicGMM, FullCovGMM,
     Rings, Rosenbrock, BayesianLogisticRegression
 )

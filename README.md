@@ -3,13 +3,13 @@ This library contains a fraction of my work done during my 2026 internship at **
 
 The ideas we are currently developping are not presented here. You will find here implementations of some other papers used to benchmark and compare our own algorithms against.
 
-# 🚀 nano-sampler-jax
+# 🚀 ErgodiX
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/release/python-3110/)
 [![JAX](https://img.shields.io/badge/JAX-Hardware%20Accelerated-orange)](https://github.com/google/jax)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-**Nano Sampler JAX** is a high-performance, hardware-accelerated Python library designed to benchmark state-of-the-art MCMC and diffusion-based sampling algorithms. 
+**ErgodiX** is a high-performance, hardware-accelerated Python library designed to benchmark state-of-the-art MCMC and diffusion-based sampling algorithms. 
 
 This repository currently features a highly optimized, fully JIT-compiled implementation of **Stochastic Localization via Iterative Posterior Sampling (SLIPS)**, based on the [2024 paper by Grenioux et al](https://arxiv.org/abs/2402.10758). 
 
@@ -39,8 +39,8 @@ Below is an example of the SLIPS algorithm successfully capturing the highly mul
 To install the package locally, clone the repository and install it via `pip`. Using a virtual environment is highly recommended.
 
 ```bash
-git clone [https://github.com/ArthurGilles/nano-sampler-jax.git](https://github.com/ArthurGilles/nano-sampler-jax.git)
-cd nano-sampler-jax
+git clone [https://github.com/ArthurGilles/ErgodiX.git](https://github.com/ArthurGilles/ErgodiX.git)
+cd ErgodiX
 
 # Install core dependencies
 pip install -e .
@@ -51,8 +51,8 @@ pip install -e ".[dev]"
 
 import jax
 import jax.numpy as jnp
-from nano_sampler_jax.slips import slips, SLIPSParams, GeomSchedule
-from nano_sampler_jax.distributions import IsotropicGaussian
+from ergodix.slips import slips, SLIPSParams, GeomSchedule
+from ergodix.distributions import IsotropicGaussian
 
 # 1. Set up the random key and target distribution
 key = jax.random.PRNGKey(42)

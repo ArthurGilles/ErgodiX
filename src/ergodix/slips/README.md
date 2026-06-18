@@ -23,7 +23,7 @@ It provides the user with 5 functions/classes:
 
 import jax
 import jax.numpy as jnp
-from slips_jax import slips, SLIPSParams, GeomSchedule
+from slips import slips, SLIPSParams, GeomSchedule
 
 
 # Define JAX random key

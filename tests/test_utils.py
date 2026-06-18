@@ -2,9 +2,9 @@ import pytest
 import jax.numpy as jnp
 import pandas as pd
 from unittest.mock import patch
-from nano_sampler_jax.distributions import fetch_and_preprocess_uci, load_sonar, load_ionosphere
+from ergodix.distributions import fetch_and_preprocess_uci, load_sonar, load_ionosphere
 
-@patch("nano_sampler_jax.distributions.utils.pd.read_csv")
+@patch("ergodix.distributions.utils.pd.read_csv")
 def test_fetch_and_preprocess_uci(mock_read_csv):
     # Dummy data: 3 rows, 2 features, 1 target string
     df = pd.DataFrame({
@@ -24,7 +24,7 @@ def test_fetch_and_preprocess_uci(mock_read_csv):
     # Z-score standardization check
     assert jnp.allclose(jnp.mean(X, axis=0), 0.0, atol=1e-6)
     
-@patch("nano_sampler_jax.distributions.utils.fetch_and_preprocess_uci")
+@patch("ergodix.distributions.utils.fetch_and_preprocess_uci")
 def test_dataset_loaders(mock_fetch):
     mock_fetch.return_value = (jnp.zeros((10, 5)), jnp.ones(10))
     

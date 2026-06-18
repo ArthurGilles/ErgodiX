@@ -1,6 +1,6 @@
 import pytest
 import jax.numpy as jnp
-from nano_sampler_jax.slips import StandardSchedule, GeomSchedule
+from ergodix.slips import StandardSchedule, GeomSchedule
 
 def test_standard_schedule():
     sched = StandardSchedule(alpha_1=1.0)
