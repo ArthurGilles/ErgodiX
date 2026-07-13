@@ -21,7 +21,7 @@ It is built heavily on `JAX` and `Equinox` to ensure that both the target distri
 
 Below is an example of the SLIPS algorithm successfully capturing the highly multimodal **8-Gaussians** distribution. Standard local MCMC methods (like MALA or HMC) frequently collapse into a single mode in this scenario.
 
-![SLIPS 8-Gaussians](assets/slips_8_gaussians.png)
+![SLIPS 8-Gaussians](https://raw.githubusercontent.com/ArthurGilles/ErgodiX/main/assets/slips_8_gaussians.png)
 
 ---
 
@@ -37,10 +37,16 @@ Below is an example of the SLIPS algorithm successfully capturing the highly mul
 
 ## 📦 Installation
 
-To install the package locally, clone the repository and install it via `pip`. Using a virtual environment is highly recommended.
+The package is not yet on PyPI. To install the latest version directly from GitHub:
 
 ```bash
-git clone [https://github.com/ArthurGilles/ErgodiX.git](https://github.com/ArthurGilles/ErgodiX.git)
+pip install git+https://github.com/ArthurGilles/ErgodiX.git
+```
+
+To work on the package itself, clone the repository and install it in editable mode. Using a virtual environment is highly recommended.
+
+```bash
+git clone https://github.com/ArthurGilles/ErgodiX.git
 cd ErgodiX
 
 # Install core dependencies
@@ -137,10 +143,11 @@ See [`src/ergodix/visuals/README.md`](src/ergodix/visuals/README.md) for more ex
 
 # 🗂️ Project Architecture
 
-The codebase is organized into three primary subpackages:
+The codebase is organized into the following subpackages: a shared target-distribution
+library, a set of samplers (`slips`, `AIS`, `RDMC`), and visualisation utilities.
 
 
-1. `nano_sampler_jax.distribution`
+1. `ergodix.distributions`
 
 An object-oriented collection of target distributions inheriting from TargetDistribution (an equinox.Module).
 
@@ -152,7 +159,7 @@ An object-oriented collection of target distributions inheriting from TargetDist
 
 - Real-world Posteriors: `BayesianLogisticRegression` (with utility loaders for UCI datasets)
 
-You can define your own distributions by making them inherit from the `TargetDistribution` class and overiding the `__call__` method:
+You can define your own distributions by making them inherit from the `TargetDistribution` class and overriding the `__call__` method (which returns the unnormalized log-density):
 
 ```python
 from jaxtyping import Array, Float
@@ -166,7 +173,7 @@ class MyDistribution(TargetDistribution):
         return ...
 ```
 
-2. `nano_sampler_jax.slips`
+2. `ergodix.slips`
 
 The core implementation of the SLIPS algorithm.
 
@@ -178,7 +185,18 @@ The core implementation of the SLIPS algorithm.
 
 - `params.py`: The `SLIPSParams` dataclass for organizing sampler hyperparameters (step sizes, burn-in ratios, chain counts).
 
-3. `ergodix.visuals`
+3. `ergodix.AIS`
+
+An implementation of Annealed Importance Sampling. Exposes the `ais` sampler along with
+`log_normalizing_constant`, `effective_sample_size`, and `resample` helpers, the `AISParams`
+dataclass, and annealing schedules (`LinearSchedule`, `PowerSchedule`, `SigmoidSchedule`).
+
+4. `ergodix.RDMC`
+
+An implementation of Reverse Diffusion Monte Carlo, exposing the `RDMC` sampler and its
+`RDMCParams` dataclass.
+
+5. `ergodix.visuals`
 
 Animation utilities to visualize sampler output over time (built on `matplotlib`, a core dependency).
 
@@ -192,7 +210,7 @@ All three return a `matplotlib.animation.FuncAnimation` and can export a GIF (or
 
 # 🧪 Running Tests
 
-The repository is fully unit-tested using pytest. The test suite validates gradients, shapes, edge-cases for schedules, and end-to-end execution of the SLIPS algorithm.
+The repository is unit-tested using pytest. The test suite validates gradients, shapes, edge-cases for schedules, and end-to-end execution of the SLIPS algorithm.
 
 ```bash
 pytest tests/ -v

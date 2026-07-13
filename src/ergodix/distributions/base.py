@@ -2,6 +2,9 @@ import jax
 import equinox as eqx
 from jaxtyping import Array, Float
 
+# DOCUMENT DENSITY OR LOG DENSITY ???
+
+
 class TargetDistribution(eqx.Module):
     """Base class for all target distributions."""
 
@@ -28,3 +31,26 @@ class TargetDistribution(eqx.Module):
             The score at ``x``, of shape ``(dim,)``.
         """
         return jax.grad(self.__call__)(x)
+
+    def sample(self, key: jax.Array, shape: tuple[int, ...]) -> Float[Array, "*shape dim"]:
+        """
+        Draw i.i.d. samples from the distribution.
+
+        Only reference distributions that a sampler starts from (e.g. the
+        isotropic Gaussian base of a diffusion sampler) need to provide this;
+        general targets are defined through their (unnormalized) log-density
+        and score alone and leave it unimplemented.
+
+        Parameters
+        ----------
+        key: jax.Array
+            Random key for JAX random number generation.
+        shape: tuple[int, ...]
+            Leading batch shape of the draw. The event dimension ``(dim,)`` is
+            appended, so the returned array has shape ``(*shape, dim)``.
+        Returns
+        -------
+        Float[Array, "*shape dim"]
+            Samples drawn from the distribution.
+        """
+        raise NotImplementedError

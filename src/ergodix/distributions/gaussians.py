@@ -19,6 +19,12 @@ class IsotropicGaussian(TargetDistribution):
         # Closed-form score of an isotropic Gaussian, faster than autodiff.
         return -(x - self.mean) / self.std**2
 
+    def sample(self, key: jax.Array, shape: tuple[int, ...]) -> Float[Array, "*shape dim"]:
+        # Reparameterised draw N(mean, std**2 I): mean + std * eps, eps ~ N(0, I).
+        dim = self.mean.shape[0]
+        eps = jax.random.normal(key, (*shape, dim))
+        return self.mean + self.std * eps
+
 
 
 class IsotropicGMM(TargetDistribution):
@@ -44,6 +50,15 @@ class IsotropicGMM(TargetDistribution):
         comp_log_pdfs = jax.vmap(component_log_prob)(self.means, self.inv_vars, self.log_norm_consts)
         return jax.scipy.special.logsumexp(self.log_weights + comp_log_pdfs)
 
+    def sample(self, key: jax.Array, shape: tuple[int, ...]) -> Float[Array, "*shape D"]:
+        # Draw a component per sample, then a Gaussian around its mean.
+        key_comp, key_noise = jax.random.split(key)
+        comp = jax.random.categorical(key_comp, self.log_weights, shape=shape)
+        means = self.means[comp]                       # (*shape, D)
+        stds = jnp.sqrt(1.0 / self.inv_vars)[comp]     # (*shape,)
+        eps = jax.random.normal(key_noise, means.shape)
+        return means + stds[..., None] * eps
+
 
 class FullCovGMM(TargetDistribution):
     """
@@ -63,8 +78,17 @@ class FullCovGMM(TargetDistribution):
             jax.scipy.stats.multivariate_normal.logpdf, 
             in_axes=(None, 0, 0)
         )(x, self.means, self.covs)
-        
+
         return jax.scipy.special.logsumexp(self.log_weights + comp_log_pdfs)
+
+    def sample(self, key: jax.Array, shape: tuple[int, ...]) -> Float[Array, "*shape D"]:
+        # Draw a component per sample, then an MVN around it via its Cholesky factor.
+        key_comp, key_noise = jax.random.split(key)
+        comp = jax.random.categorical(key_comp, self.log_weights, shape=shape)
+        means = self.means[comp]                       # (*shape, D)
+        chols = jnp.linalg.cholesky(self.covs)[comp]   # (*shape, D, D)
+        eps = jax.random.normal(key_noise, means.shape)
+        return means + jnp.einsum("...ij,...j->...i", chols, eps)
     
 
 

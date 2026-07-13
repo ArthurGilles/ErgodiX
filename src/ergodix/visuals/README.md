@@ -15,7 +15,7 @@ It provides the user with 3 functions:
 A few conventions shared by all three functions:
 
 - **Input layout matches SLIPS.** Pass `Y_hist` of shape `(n_samples, n_steps, dim)` as `samples`, and `X_hist` of shape `(n_samples, n_steps, n_chains, dim)` as `particles` — straight from `slips(..., return_history=True)`.
-- **A "pdf" is a log-density**, exactly like the `log_target` you pass to `slips` (any `TargetDistribution` works). It is exponentiated and normalized internally. Pass `pdf_is_log=False` to supply an already-linear density instead.
+- **A "pdf" is a log-density**, exactly like the log-density `target` you pass to `slips` (any `TargetDistribution` works). It is exponentiated and normalized internally. Pass `pdf_is_log=False` to supply an already-linear density instead.
 - Each function returns a `matplotlib.animation.FuncAnimation`. Pass `save_path="....gif"` to write a GIF (via Pillow), or `"....mp4"` for a video (requires ffmpeg). To display interactively instead, call `matplotlib.pyplot.show()`.
 
 

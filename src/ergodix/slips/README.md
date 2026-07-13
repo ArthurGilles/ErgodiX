@@ -14,7 +14,7 @@ It provides the user with 5 functions/classes:
 - `SLIPSParams`: object which allows to define the parameters for the slips algorithm
 - `GeomSchedule`: object representing the schedule (functions $\alpha(t)$ and $g(t)$ in the SLIPS paper) for a non-asymptotic geometric schedule, as defined in section **3.2.b**
 - `StandardSchedule`: object representing the schedule (functions $\alpha(t)$ and $g(t)$ in the SLIPS paper) for an asymptotic geometric schedule, as defined in section **3.2.a**
-- `Schedule`: object representing the schedule in general. It defines (using the notations from the paper) an `alpha` function, based on a `g` function. The `g`function can be defined by making a subclass which inherits from `Schedule` and  redefines a `g` function.
+- `NoiseSchedule`: object representing the schedule in general. It defines (using the notations from the paper) an `alpha` function, based on a `g` function. The `g`function can be defined by making a subclass which inherits from `NoiseSchedule` and  redefines a `g` function.
 
 
 # Example usage of functions from this subpackage
@@ -23,14 +23,16 @@ It provides the user with 5 functions/classes:
 
 import jax
 import jax.numpy as jnp
-from slips import slips, SLIPSParams, GeomSchedule
+from ergodix.slips import slips, SLIPSParams, GeomSchedule
+from ergodix.distributions import IsotropicGaussian
 
 
 # Define JAX random key
 key = jax.random.PRNGKey(42)
 
-# Distribution to sample from
-log_target = lambda x: -jnp.sum(((x-6)/2)**2)/2
+# Distribution to sample from: any TargetDistribution (only its log-density
+# __call__ is used). A plain callable returning the log-density also works.
+target = IsotropicGaussian(mean=jnp.full((2,), 6.0), std=jnp.full((2,), 2.0))
 
 # Several samplers can be ran in parallel with the batch_size variable (faster on GPU)
 batch_size = 10
@@ -53,7 +55,7 @@ params = SLIPSParams(sigma=10.0,
                      return_history=True)
 
 # Run the algorithm
-samples, Y_hist, X_hist = slips(key, log_target, time_grid, batch_size, dim, params)
+samples, Y_hist, X_hist = slips(key, target, time_grid, batch_size, dim, params)
 
 print(samples)
 ```

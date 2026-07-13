@@ -16,8 +16,8 @@ Conventions
   straight through. Internally everything is converted to the **time-major**
   layout ``(n_steps, n_points, dim)`` so that frame ``t`` is a single slice.
 - A "pdf" is a callable mapping a point of shape ``(dim,)`` to a scalar. By
-  default it is interpreted as a **log**-density (exactly like the
-  ``log_target`` passed to :func:`ergodix.slips.slips`); it is exponentiated and
+  default it is interpreted as a **log**-density (exactly like the log-density
+  ``target`` passed to :func:`ergodix.slips.slips`); it is exponentiated and
   **numerically normalised to total mass 1** on the plotting grid.
 """
 

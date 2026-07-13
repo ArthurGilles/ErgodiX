@@ -2,12 +2,15 @@ import jax.numpy as jnp
 from jaxtyping import Array, Float
 import equinox as eqx 
 
-class Schedule(eqx.Module):
+class NoiseSchedule(eqx.Module):
     """
-    Base class for SLIPS time schedules, defining the alpha(t) and g(t) functions.
+    Base class for SLIPS noise schedules, defining the alpha(t) and g(t) functions.
     Subclass this to implement specific schedules by overriding the g(t) function.
-    Schedule objects are passed to the SLIPSParams object, 
+    ``NoiseSchedule`` objects are passed to the SLIPSParams object,
     which is then passed to the slips function.
+
+    (Distinct from ``ergodix.dippax.MixingSchedule``, which defines the DIPPER
+    mixing coefficient ``lambda(t)``.)
     """
     def g(self, t: Float[Array, ""]) -> Float[Array, ""]:
         raise NotImplementedError
@@ -62,7 +65,7 @@ class Schedule(eqx.Module):
         """Override to add specific bounds checks."""
         return eqx.error_if(time_grid, time_grid[0] <= 0, "time_grid[0] must be strictly > 0")
 
-class StandardSchedule(Schedule):
+class StandardSchedule(NoiseSchedule):
     """
     Asymptotic geometric schedule (Standard SLIPS).
 
@@ -106,7 +109,7 @@ class StandardSchedule(Schedule):
         target_log_snr = jnp.linspace(log_snr_0, log_snr_end, steps)
         return jnp.exp(target_log_snr / self.alpha_1)
 
-class GeomSchedule(Schedule):
+class GeomSchedule(NoiseSchedule):
     """
     Non-asymptotic geometric schedule.
 

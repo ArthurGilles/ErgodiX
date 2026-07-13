@@ -44,7 +44,7 @@ def animate_samples(
             :func:`ergodix.visuals.animate_projection`.
         pdf: TargetDistribution or Callable, optional
             Density overlaid on the samples. By default it is interpreted as a
-            **log**-density (like the ``log_target`` of `slips`, e.g. any
+            **log**-density (like the log-density ``target`` of `slips`, e.g. any
             `TargetDistribution`); it is exponentiated and normalised so that the
             displayed mass integrates to 1. Pass ``pdf_is_log=False`` to supply a
             linear density instead. It must accept a point of shape ``(dim,)`` and

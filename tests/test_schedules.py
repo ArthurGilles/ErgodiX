@@ -1,6 +1,12 @@
 import pytest
 import jax.numpy as jnp
-from ergodix.slips import StandardSchedule, GeomSchedule
+from ergodix.slips import NoiseSchedule, StandardSchedule, GeomSchedule
+
+def test_noise_schedule_base_is_abstract():
+    # NoiseSchedule (formerly Schedule) is the abstract base: g(t) must be
+    # overridden by concrete schedules.
+    with pytest.raises(NotImplementedError):
+        NoiseSchedule().g(jnp.array(0.5))
 
 def test_standard_schedule():
     sched = StandardSchedule(alpha_1=1.0)

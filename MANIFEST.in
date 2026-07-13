@@ -1,0 +1,4 @@
+# Keep the private DIPPER (dippax) work out of the source distribution.
+# The dippax package itself is excluded via tool.setuptools.packages.find in
+# pyproject.toml; this drops its test module from the sdist as well.
+exclude tests/test_dippax.py

@@ -1,9 +1,9 @@
 from .slips import slips
 from .params import SLIPSParams
-from .schedules import Schedule, StandardSchedule, GeomSchedule
+from .schedules import NoiseSchedule, StandardSchedule, GeomSchedule
 
 __all__ = ["slips",
            "SLIPSParams",
-           "Schedule",
+           "NoiseSchedule",
            "GeomSchedule",
            "StandardSchedule"]
