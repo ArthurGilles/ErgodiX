@@ -21,9 +21,7 @@ pytestmark = pytest.mark.filterwarnings(
 )
 
 
-# --------------------------------------------------------------------------- #
-# Helpers / fixtures
-# --------------------------------------------------------------------------- #
+# Helpers and fixtures
 @pytest.fixture(autouse=True)
 def _close_figures():
     """Close every figure after each test to avoid leaking state/memory."""
@@ -43,9 +41,7 @@ def _axes(anim):
     return anim._fig.axes
 
 
-# --------------------------------------------------------------------------- #
 # animate_samples
-# --------------------------------------------------------------------------- #
 def test_animate_samples_1d(prng_key):
     samples = _make(prng_key, (40, 6, 1))
     anim = animate_samples(samples)
@@ -94,9 +90,7 @@ def test_animate_samples_rejects_bad_shape(prng_key):
         animate_samples(samples)
 
 
-# --------------------------------------------------------------------------- #
 # animate_projection
-# --------------------------------------------------------------------------- #
 def test_animate_projection_to_1d(prng_key):
     samples = _make(prng_key, (50, 5, 5))
     direction = jnp.ones(5)
@@ -137,9 +131,7 @@ def test_animate_projection_dim_mismatch_raises(prng_key):
         animate_projection(samples, jnp.ones(3))  # 3 != 5
 
 
-# --------------------------------------------------------------------------- #
 # compare_samples
-# --------------------------------------------------------------------------- #
 def test_compare_samples_with_particles(prng_key):
     keys = jax.random.split(prng_key, 4)
     set_a = (_make(keys[0], (30, 5, 2)), _make(keys[1], (30, 5, 3, 2)))
@@ -179,9 +171,7 @@ def test_compare_samples_per_set_pdfs_length_checked(prng_key):
         )
 
 
-# --------------------------------------------------------------------------- #
 # pdf normalisation helpers
-# --------------------------------------------------------------------------- #
 def test_density_1d_integrates_to_one():
     log_gauss = lambda x: -0.5 * jnp.sum(x ** 2)
     xs, dens = _density_1d(log_gauss, (-6.0, 6.0), grid_size=400, is_log=True)
@@ -201,9 +191,7 @@ def test_density_2d_integrates_to_one():
     assert np.isclose(zz.sum() * cell, 1.0, atol=1e-2)
 
 
-# --------------------------------------------------------------------------- #
 # GIF export
-# --------------------------------------------------------------------------- #
 def test_animate_samples_saves_gif(prng_key, tmp_path):
     samples = _make(prng_key, (30, 4, 2))
     out = tmp_path / "samples.gif"
@@ -226,9 +214,7 @@ def test_unsupported_save_format_raises(prng_key, tmp_path):
         animate_samples(samples, save_path=str(tmp_path / "out.xyz"))
 
 
-# --------------------------------------------------------------------------- #
 # End-to-end with real SLIPS output
-# --------------------------------------------------------------------------- #
 def test_animate_samples_with_real_slips_output(prng_key):
     dim = 2
     batch_size = 8

@@ -6,7 +6,7 @@ This subpackage contains a JAX implementation of the algorithm from the paper:
 
 available at:
 
-### https://arxiv.org/abs/physics/0009028
+### https://arxiv.org/abs/physics/9803008
 
 AIS produces *weighted* samples from a target $\pi_n$ by bridging it with an
 easy-to-sample reference $\pi_0$ through a ladder of intermediate distributions

@@ -124,6 +124,9 @@ time_grid = schedule.get_snr_grid(t_0=0.1, t_end=0.9, steps=40)
 params = SLIPSParams(sigma=1.0, schedule=schedule, return_history=True)
 _, y_hist, x_hist = slips(key, target, time_grid, 300, dim, params)
 
+# Y should be divided by alpha(t) to get the actual samples
+y_hist = y_hist/schedule.alpha(time_grid[None, 1:, None])
+
 # Samples (left) and particles (right) converging onto the target's level lines,
 # saved as a GIF.
 animate_samples(

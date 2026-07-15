@@ -7,6 +7,7 @@ Subpackages
 - ``ergodix.RDMC``: RDMC (reverse diffusion Monte Carlo) sampler.
 - ``ergodix.AIS``: AIS (annealed importance sampling) sampler.
 - ``ergodix.distributions``: target distributions (all ``TargetDistribution``).
+- ``ergodix.metrics``: sliced distances to compare two sets of samples.
 - ``ergodix.visuals``: animation / visualisation helpers (needs matplotlib).
 
 The subpackages are imported lazily on first access, so ``import ergodix`` stays
@@ -20,7 +21,7 @@ import importlib
 
 __version__ = "0.1.0"
 
-_SUBPACKAGES = ("distributions", "slips", "RDMC", "AIS", "visuals")
+_SUBPACKAGES = ("distributions", "slips", "RDMC", "AIS", "metrics", "visuals")
 
 
 def __getattr__(name: str):

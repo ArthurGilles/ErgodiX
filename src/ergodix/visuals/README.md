@@ -48,6 +48,9 @@ params = SLIPSParams(sigma=1.0, schedule=schedule, return_history=True)
 _, y_hist, x_hist = slips(key, target, time_grid, 300, dim, params)
 # y_hist: (300, n_steps, 2)            -> samples over time
 # x_hist: (300, n_steps, n_chains, 2)  -> particles over time
+
+# Y should be divided by alpha(t) to get the actual samples
+y_hist = y_hist/schedule.alpha(time_grid[None, 1:, None])
 ```
 
 ## 1) `animate_samples`: samples (and particles) over time
